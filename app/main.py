@@ -1,50 +1,57 @@
-from fastapi import FastAPI, HTTPException, Query
-from typing import List, Dict
+from typing import List
 
-app = FastAPI(title="task API MVP")
+from fastapi import FastAPI
+from pydantic import BaseModel
 
 
-tasks: List[Dict] = []
-next_id = 1
+app = FastAPI(
+    title="TCC DevSecOps API",
+    description="Microserviço simples usado como SUT no experimento DevSecOps.",
+    version="1.0.0",
+)
 
-# Isca SAST: credencial hardcoded óbvia (intencional)
-AWS_SECRET_KEY = "EXAMPLE123"
 
-# --- ISCA DAST: endpoint vulnerável por reflexão direta de input ---
-@app.get("/api/test")
-def api_test(input: str = Query(default="")):
-    return {"echo": input}
+class ItemCreate(BaseModel):
+    name: str
+    description: str
+
+
+class Item(ItemCreate):
+    id: int
+
+
+items = [
+    {
+        "id": 1,
+        "name": "Item exemplo",
+        "description": "Item usado no experimento",
+    }
+]
+
+
+@app.get("/")
+def read_root():
+    return {"message": "TCC DevSecOps API"}
+
 
 @app.get("/health")
-def health():
-    return {"status" : "ok"}
+def health_check():
+    return {"status": "ok"}
 
-@app.get("/tasks")
-def list_tasks():
-    return tasks
 
-@app.post("/tasks", status_code = 201)
-def create_task(task: Dict):
-    global next_id
-    new_task = {
-        "id": next_id,
-        "title": task.get("title"),
-        "completed": task.get("completed", False),
+@app.get("/items", response_model=List[Item])
+def get_items():
+    return items
+
+
+@app.post("/items", response_model=Item)
+def create_item(item: ItemCreate):
+    new_item = {
+        "id": len(items) + 1,
+        "name": item.name,
+        "description": item.description,
     }
-    tasks.append(new_task)
-    next_id += 1
-    return new_task
 
-@app.get ("/tasks/{task_id}")
-def get_task(task_id: int):
-    for task in tasks:
-        if task["id"] ==  task_id:
-            return task
-    raise HTTPException(status_code = 404, detail = "task not found")
+    items.append(new_item)
 
-@app.delete("/tasks/{task_id}")
-def delete_task(task_id: int):
-    for idx, task in enumerate(tasks):
-        if task["id"] == task_id:
-            return tasks.pop(idx)
-    raise HTTPException(status_code = 404, detail = "Task not found")
+    return new_item
