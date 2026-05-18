@@ -214,18 +214,6 @@ test_main.py::test_post_item     PASSED
 Todos os 4 testes devem passar sem erros ou avisos.
 
 ---
-
-## 📸 Evidências para o TCC
-
-Para registrar esta etapa no trabalho, recomenda-se capturar as seguintes evidências:
-
-- [ ] Print do terminal com `4 passed` após execução do Pytest
-- [ ] Print da interface Swagger UI (`/docs`) no navegador
-- [ ] Print do retorno dos endpoints via Invoke-RestMethod ou curl
-- [ ] Print da estrutura de arquivos da pasta `app/`
-
----
-
 ## 🎯 Decisões de escopo
 
 Esta aplicação foi desenvolvida com escopo **deliberadamente reduzido**. As decisões abaixo são parte do design experimental do TCC:
