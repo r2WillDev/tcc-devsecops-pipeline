@@ -134,9 +134,9 @@ O repositório encontra-se na fase inicial de organização. O foco desta etapa 
 - [x] Definição da estrutura de diretórios do repositório
 - [x] Documentação inicial do projeto (este README)
 - [x] Definição dos cenários experimentais
+- [x] Aplicação base em FastAPI
 
 **O que ainda não foi implementado:**
-- [ ] Aplicação base em FastAPI
 - [ ] Containerização com Docker
 - [ ] Workflows do GitHub Actions
 - [ ] Integração com SonarQube, Trivy e OWASP ZAP
@@ -146,7 +146,6 @@ O repositório encontra-se na fase inicial de organização. O foco desta etapa 
 
 ## 🚀 Próximos Passos
 
-- [ ] Desenvolver a aplicação base em FastAPI
 - [ ] Criar o `Dockerfile` da aplicação
 - [ ] Implementar o pipeline C1 (baseline) no GitHub Actions
 - [ ] Validar a coleta de métricas de lead time
