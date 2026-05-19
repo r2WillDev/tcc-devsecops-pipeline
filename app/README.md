@@ -230,4 +230,97 @@ Esta aplicação foi desenvolvida com escopo **deliberadamente reduzido**. As de
 
 ---
 
-*Documentação referente à Etapa 2 do experimento DevSecOps.*
+## 🐳 Docker — Containerização da aplicação (Etapa 3)
+
+### Objetivo
+
+Empacotar a aplicação FastAPI em uma imagem Docker reproduzível, adequada para uso em pipelines CI/CD, análise de segurança com **Trivy** e execução futura em ambientes como Kubernetes local.
+
+Os arquivos criados nesta etapa foram:
+
+| Arquivo            | Finalidade                                              |
+|--------------------|---------------------------------------------------------|
+| `app/Dockerfile`   | Define a imagem Docker da aplicação                     |
+| `app/.dockerignore`| Exclui arquivos desnecessários do contexto de build     |
+| `Makefile`         | Atalhos para os principais comandos do projeto          |
+
+---
+
+### 🔨 Construir a imagem
+
+Dentro da raiz do repositório, execute:
+
+```bash
+docker build -t tcc-devsecops-api:local ./app
+```
+
+---
+
+### ▶️ Executar o container
+
+```bash
+docker run -d --name tcc-devsecops-api -p 8000:8000 tcc-devsecops-api:local
+```
+
+A API estará disponível em `http://127.0.0.1:8000`.
+
+---
+
+### ✅ Validar o endpoint `/health`
+
+```bash
+curl http://127.0.0.1:8000/health
+```
+
+**Resposta esperada:**
+
+```json
+{"status":"ok"}
+```
+
+---
+
+### 📋 Visualizar logs do container
+
+```bash
+docker logs tcc-devsecops-api
+```
+
+---
+
+### ⏹️ Parar e remover o container
+
+```bash
+docker stop tcc-devsecops-api
+docker rm tcc-devsecops-api
+```
+
+---
+
+### ⚡ Atalhos com Makefile (opcional)
+
+O `Makefile` disponibiliza comandos rápidos para as operações mais comuns:
+
+| Comando            | Equivalente                              |
+|--------------------|------------------------------------------|
+| `make install`     | Instala as dependências Python           |
+| `make test`        | Executa os testes com Pytest             |
+| `make run`         | Sobe a aplicação localmente com Uvicorn  |
+| `make docker-build`| Constrói a imagem Docker                 |
+| `make docker-run`  | Executa o container                      |
+| `make docker-stop` | Para o container em execução             |
+| `make docker-clean`| Para e remove o container                |
+
+---
+
+### ⚠️ Usuários Windows / PowerShell
+
+O comando `make` pode não estar disponível no Windows por padrão. Nesse caso, utilize os comandos Docker diretamente conforme documentado nas seções acima — o comportamento é equivalente.
+
+> [!TIP]
+> Alternativa: instale o `make` via [Chocolatey](https://chocolatey.org/) com `choco install make`, ou utilize o terminal do **Git Bash** / **WSL**.
+
+---
+
+*Documentação referente à Etapa 3 do experimento DevSecOps.*
+
