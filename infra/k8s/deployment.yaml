@@ -1,0 +1,49 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tcc-api
+  namespace: app
+  labels:
+    app: tcc-api
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tcc-api
+  template:
+    metadata:
+      labels:
+        app: tcc-api
+        tier: backend
+    spec:
+      containers:
+        - name: tcc-api
+          image: tcc-devsecops-api:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
