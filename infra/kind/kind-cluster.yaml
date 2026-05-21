@@ -1,0 +1,9 @@
+﻿kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+
+nodes:
+  - role: control-plane
+
+# Nesta etapa, o objetivo era validar o deploy local mínimo da aplicação containerizada em Kubernetes, 
+# preparando a base para medições futuras de lead time no pipeline CI/CD. Como o foco ainda não era alta disponibilidade nem distribuição de carga,
+# um cluster kind com um único node foi suficiente para validar namespace, deployment, pod, service, logs e acesso via port-forward.
