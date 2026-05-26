@@ -103,7 +103,8 @@ jobs:
 
       - name: Upload C1 metrics artifact
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: c1-baseline-metrics
           path: analysis/raw/c1_baseline_run.csv
+
