@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Prepare results CSV
         run: |
@@ -29,7 +29,7 @@ jobs:
           echo "scenario,run_id,run_number,commit_sha,step_name,start_timestamp,end_timestamp,duration_seconds,status" > "$RESULTS_FILE"
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -103,7 +103,7 @@ jobs:
 
       - name: Upload C1 metrics artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: c1-baseline-metrics
           path: analysis/raw/c1_baseline_run.csv
