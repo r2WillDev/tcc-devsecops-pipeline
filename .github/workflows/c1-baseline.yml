@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - feature/c1-baseline-pipeline
+      - dev
 
 env:
   SCENARIO: C1-baseline
@@ -107,4 +107,5 @@ jobs:
         with:
           name: c1-baseline-metrics
           path: analysis/raw/c1_baseline_run.csv
+
 
