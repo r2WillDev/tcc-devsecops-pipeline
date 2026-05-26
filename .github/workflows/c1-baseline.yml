@@ -24,6 +24,8 @@ jobs:
       - name: Prepare results CSV
         run: |
           mkdir -p analysis/raw
+          echo "WORKFLOW_START_SECONDS=$(date +%s)" >> "$GITHUB_ENV"
+          echo "WORKFLOW_START_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$GITHUB_ENV"
           echo "scenario,run_id,run_number,commit_sha,step_name,start_timestamp,end_timestamp,duration_seconds,status" > "$RESULTS_FILE"
 
       - name: Setup Python
@@ -71,6 +73,14 @@ jobs:
         run: |
           ./ci/scripts/measure_step.sh "kubernetes_smoke_test" "$RESULTS_FILE" \
             bash -c 'kubectl port-forward svc/tcc-api 8000:80 -n app > /tmp/port-forward.log 2>&1 & PF_PID=$!; sleep 5; curl -fsS http://localhost:8000/health; kill $PF_PID'
+
+      - name: Append workflow total duration
+        if: always()
+        run: |
+          WORKFLOW_END_TIMESTAMP="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          WORKFLOW_END_SECONDS="$(date +%s)"
+          WORKFLOW_DURATION_SECONDS=$((WORKFLOW_END_SECONDS - WORKFLOW_START_SECONDS))
+          echo "${SCENARIO},${GITHUB_RUN_ID},${GITHUB_RUN_NUMBER},${GITHUB_SHA},workflow_total,${WORKFLOW_START_TIMESTAMP},${WORKFLOW_END_TIMESTAMP},${WORKFLOW_DURATION_SECONDS},success" >> "$RESULTS_FILE"
 
       - name: Show collected metrics
         if: always()
