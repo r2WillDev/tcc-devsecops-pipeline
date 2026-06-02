@@ -1,0 +1,133 @@
+name: C2 - SAST SonarQube Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/c2-sonarqube-sast
+
+env:
+  SCENARIO: C2-sast
+  RESULTS_FILE: analysis/raw/c2_sast_run.csv
+  IMAGE_NAME: tcc-devsecops-api:local
+  CLUSTER_NAME: tcc-devsecops
+  SONAR_PROJECT_SETTINGS: ci/config/sonar-project.properties
+
+jobs:
+  c2-sast:
+    name: C2 baseline plus SonarQube SAST
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Cleanup previous kind cluster container
+        run: |
+          docker rm -f "${CLUSTER_NAME}-control-plane" 2>/dev/null || true
+
+      - name: Prepare results CSV
+        run: |
+          mkdir -p analysis/raw
+          echo "WORKFLOW_START_SECONDS=$(date +%s)" >> "$GITHUB_ENV"
+          echo "WORKFLOW_START_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$GITHUB_ENV"
+          echo "scenario,run_id,run_number,commit_sha,step_name,start_timestamp,end_timestamp,duration_seconds,status" > "$RESULTS_FILE"
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Make measurement script executable
+        run: chmod +x ci/scripts/measure_step.sh
+
+      - name: Install Python dependencies
+        run: |
+          ./ci/scripts/measure_step.sh "install_dependencies" "$RESULTS_FILE" \
+            python -m pip install -r app/requirements.txt
+
+      - name: Run unit tests
+        run: |
+          ./ci/scripts/measure_step.sh "unit_tests" "$RESULTS_FILE" \
+            python -m pytest app -v
+
+      - name: Run SonarQube SAST analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          SONARQUBE_NETWORK=$(docker inspect tcc-sonarqube --format '{{range $name, $_ := .NetworkSettings.Networks}}{{println $name}}{{end}}' | head -n 1)
+          echo "Using SonarQube Docker network: $SONARQUBE_NETWORK"
+
+          ./ci/scripts/measure_step.sh "sonarqube_sast" "$RESULTS_FILE" \
+            docker run --rm \
+              --network "$SONARQUBE_NETWORK" \
+              -e SONAR_HOST_URL="$SONAR_HOST_URL" \
+              -e SONAR_TOKEN="$SONAR_TOKEN" \
+              -v "$GITHUB_WORKSPACE:/usr/src" \
+              sonarsource/sonar-scanner-cli \
+              -Dproject.settings="$SONAR_PROJECT_SETTINGS"
+
+      - name: Build Docker image
+        run: |
+          ./ci/scripts/measure_step.sh "docker_build" "$RESULTS_FILE" \
+            docker build -t "$IMAGE_NAME" ./app
+
+      - name: Install kind
+        run: |
+          mkdir -p "$HOME/.local/bin"
+          curl -Lo "$HOME/.local/bin/kind" https://kind.sigs.k8s.io/dl/v0.30.0/kind-linux-amd64
+          chmod +x "$HOME/.local/bin/kind"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.local/bin:$PATH"
+          kind version
+
+      - name: Create local Kubernetes cluster
+        run: |
+          kind create cluster --name "$CLUSTER_NAME" --config infra/kind/kind-cluster.yaml
+          kubectl cluster-info
+          kubectl get nodes
+
+      - name: Deploy to Kubernetes
+        run: |
+          ./ci/scripts/measure_step.sh "kubernetes_deploy" "$RESULTS_FILE" \
+            bash -c 'kind load docker-image "$IMAGE_NAME" --name "$CLUSTER_NAME" && kubectl apply -f infra/k8s/namespace.yaml && kubectl apply -f infra/k8s/deployment.yaml && kubectl apply -f infra/k8s/service.yaml && kubectl rollout status deployment/tcc-api -n app --timeout=120s'
+
+      - name: Smoke test Kubernetes deployment
+        run: |
+          ./ci/scripts/measure_step.sh "kubernetes_smoke_test" "$RESULTS_FILE" \
+            bash -c 'kubectl port-forward svc/tcc-api 8000:80 -n app > /tmp/port-forward.log 2>&1 & PF_PID=$!; sleep 5; curl -fsS http://localhost:8000/health; kill $PF_PID'
+
+      - name: Append workflow total duration
+        if: always()
+        run: |
+          WORKFLOW_END_TIMESTAMP="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          WORKFLOW_END_SECONDS="$(date +%s)"
+          WORKFLOW_DURATION_SECONDS=$((WORKFLOW_END_SECONDS - WORKFLOW_START_SECONDS))
+          echo "${SCENARIO},${GITHUB_RUN_ID},${GITHUB_RUN_NUMBER},${GITHUB_SHA},workflow_total,${WORKFLOW_START_TIMESTAMP},${WORKFLOW_END_TIMESTAMP},${WORKFLOW_DURATION_SECONDS},success" >> "$RESULTS_FILE"
+
+      - name: Show collected metrics
+        if: always()
+        run: |
+          echo "Collected C2 SAST metrics:"
+          cat "$RESULTS_FILE"
+
+      - name: Write GitHub Actions summary
+        if: always()
+        run: |
+          echo "## C2 - SAST SonarQube Pipeline" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Scenario: $SCENARIO" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Collected metrics" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```csv' >> "$GITHUB_STEP_SUMMARY"
+          cat "$RESULTS_FILE" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload C2 metrics artifact
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: c2-sast-metrics
+          path: analysis/raw/c2_sast_run.csv
