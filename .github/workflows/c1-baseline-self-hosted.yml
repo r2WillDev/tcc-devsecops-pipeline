@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - dev
+      - feature/c2-sonarqube-sast
 
 
 env:
