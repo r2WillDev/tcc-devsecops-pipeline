@@ -1,4 +1,4 @@
-﻿name: C1 - Baseline Pipeline
+name: C2 - SAST SonarQube Pipeline
 
 on:
   workflow_dispatch:
@@ -7,15 +7,16 @@ on:
       - dev
 
 env:
-  SCENARIO: C1-baseline
-  RESULTS_FILE: analysis/raw/c1_baseline_run.csv
+  SCENARIO: C2-sast
+  RESULTS_FILE: analysis/raw/c2_sast_run.csv
   IMAGE_NAME: tcc-devsecops-api:local
   CLUSTER_NAME: tcc-devsecops
+  SONAR_PROJECT_SETTINGS: ci/config/sonar-project.properties
 
 jobs:
-  c1-baseline:
-    name: C1 baseline
-    runs-on: ubuntu-latest
+  c2-sast:
+    name: C2 baseline plus SonarQube SAST
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
@@ -50,6 +51,23 @@ jobs:
           ./ci/scripts/measure_step.sh "unit_tests" "$RESULTS_FILE" \
             python -m pytest app -v
 
+      - name: Run SonarQube SAST analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          SONARQUBE_NETWORK=$(docker inspect tcc-sonarqube --format '{{range $name, $_ := .NetworkSettings.Networks}}{{println $name}}{{end}}' | head -n 1)
+          echo "Using SonarQube Docker network: $SONARQUBE_NETWORK"
+
+          ./ci/scripts/measure_step.sh "sonarqube_sast" "$RESULTS_FILE" \
+            docker run --rm \
+              --network "$SONARQUBE_NETWORK" \
+              -e SONAR_HOST_URL="$SONAR_HOST_URL" \
+              -e SONAR_TOKEN="$SONAR_TOKEN" \
+              -v "$GITHUB_WORKSPACE:/usr/src" \
+              sonarsource/sonar-scanner-cli \
+              -Dproject.settings="$SONAR_PROJECT_SETTINGS"
+
       - name: Build Docker image
         run: |
           ./ci/scripts/measure_step.sh "docker_build" "$RESULTS_FILE" \
@@ -57,9 +75,11 @@ jobs:
 
       - name: Install kind
         run: |
-          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.30.0/kind-linux-amd64
-          chmod +x ./kind
-          sudo mv ./kind /usr/local/bin/kind
+          mkdir -p "$HOME/.local/bin"
+          curl -Lo "$HOME/.local/bin/kind" https://kind.sigs.k8s.io/dl/v0.30.0/kind-linux-amd64
+          chmod +x "$HOME/.local/bin/kind"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.local/bin:$PATH"
           kind version
 
       - name: Create local Kubernetes cluster
@@ -89,13 +109,13 @@ jobs:
       - name: Show collected metrics
         if: always()
         run: |
-          echo "Collected C1 baseline metrics:"
+          echo "Collected C2 SAST metrics:"
           cat "$RESULTS_FILE"
 
       - name: Write GitHub Actions summary
         if: always()
         run: |
-          echo "## C1 - Baseline Pipeline" >> "$GITHUB_STEP_SUMMARY"
+          echo "## C2 - SAST SonarQube Pipeline" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "Scenario: $SCENARIO" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -105,11 +125,9 @@ jobs:
           cat "$RESULTS_FILE" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload C1 metrics artifact
+      - name: Upload C2 metrics artifact
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: c1-baseline-metrics
-          path: analysis/raw/c1_baseline_run.csv
-
-
+          name: c2-sast-metrics
+          path: analysis/raw/c2_sast_run.csv
