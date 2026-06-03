@@ -1,4 +1,4 @@
-﻿name: C1 - Baseline Pipeline
+name: C1 - Baseline Self-Hosted Pipeline
 
 on:
   workflow_dispatch:
@@ -6,16 +6,17 @@ on:
     branches:
       - dev
 
+
 env:
-  SCENARIO: C1-baseline
-  RESULTS_FILE: analysis/raw/c1_baseline_run.csv
+  SCENARIO: C1-self-hosted
+  RESULTS_FILE: analysis/raw/c1_self_hosted_run.csv
   IMAGE_NAME: tcc-devsecops-api:local
   CLUSTER_NAME: tcc-devsecops
 
 jobs:
-  c1-baseline:
-    name: C1 baseline
-    runs-on: ubuntu-latest
+  c1-baseline-self-hosted:
+    name: C1 baseline self-hosted
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
@@ -57,9 +58,11 @@ jobs:
 
       - name: Install kind
         run: |
-          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.30.0/kind-linux-amd64
-          chmod +x ./kind
-          sudo mv ./kind /usr/local/bin/kind
+          mkdir -p "$HOME/.local/bin"
+          curl -Lo "$HOME/.local/bin/kind" https://kind.sigs.k8s.io/dl/v0.30.0/kind-linux-amd64
+          chmod +x "$HOME/.local/bin/kind"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.local/bin:$PATH"
           kind version
 
       - name: Create local Kubernetes cluster
@@ -89,13 +92,13 @@ jobs:
       - name: Show collected metrics
         if: always()
         run: |
-          echo "Collected C1 baseline metrics:"
+          echo "Collected C1 self-hosted metrics:"
           cat "$RESULTS_FILE"
 
       - name: Write GitHub Actions summary
         if: always()
         run: |
-          echo "## C1 - Baseline Pipeline" >> "$GITHUB_STEP_SUMMARY"
+          echo "## C1 - Baseline Self-Hosted Pipeline" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "Scenario: $SCENARIO" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -105,11 +108,9 @@ jobs:
           cat "$RESULTS_FILE" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload C1 metrics artifact
+      - name: Upload C1 self-hosted metrics artifact
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: c1-baseline-metrics
-          path: analysis/raw/c1_baseline_run.csv
-
-
+          name: c1-self-hosted-metrics
+          path: analysis/raw/c1_self_hosted_run.csv
