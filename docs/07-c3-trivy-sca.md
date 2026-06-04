@@ -361,22 +361,5 @@ As vulnerabilidades CRITICAL e HIGH identificadas devem ser investigadas em etap
 
 ---
 
-## 14. Critério de conclusão
-
-- [x] Branch `feature/c3-trivy-sca` criada.
-- [x] Workflow `.github/workflows/c3-sast-sca.yml` criado.
-- [x] Arquivo `ci/config/trivy.yaml` criado.
-- [x] CSV `analysis/raw/c3_sast_sca.csv` criado.
-- [x] CSV `analysis/raw/c3_trivy_summary.csv` criado.
-- [x] Pipeline executando testes, SAST, SCA, build, deploy e smoke test.
-- [x] Trivy filesystem scan executado.
-- [x] Trivy image scan executado.
-- [x] Relatórios JSON/SARIF gerados como artifacts.
-- [x] Métricas de tempo registradas.
-- [x] Vulnerabilidades por severidade registradas.
-- [x] Cinco execuções válidas coletadas.
-- [x] Evidências recomendadas definidas.
-
----
 
 *Documentação gerada para o TCC: "Avaliação Experimental do Impacto de Práticas DevSecOps no Lead Time de Pipelines CI/CD"*
