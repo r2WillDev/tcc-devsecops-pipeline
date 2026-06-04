@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - feature/c3-trivy-sca
+      - dev
 
 env:
   SCENARIO: C3-sast-sca
