@@ -1,0 +1,28 @@
+﻿timeout: 10m
+
+scan:
+  scanners:
+    - vuln
+  skip-dirs:
+    - .git
+    - .venv
+    - venv
+    - __pycache__
+    - analysis
+    - docs
+
+pkg:
+  types:
+    - os
+    - library
+
+severity:
+  - LOW
+  - MEDIUM
+  - HIGH
+  - CRITICAL
+
+vulnerability:
+  ignore-unfixed: false
+
+exit-code: 0
