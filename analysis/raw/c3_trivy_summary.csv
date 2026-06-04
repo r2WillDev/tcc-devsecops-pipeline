@@ -1,0 +1,1 @@
+﻿scenario,run_id,run_number,commit_sha,trivy_target,trivy_scan_type,vuln_low,vuln_medium,vuln_high,vuln_critical,total_vulnerabilities
