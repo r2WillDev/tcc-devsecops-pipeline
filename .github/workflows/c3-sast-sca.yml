@@ -9,7 +9,7 @@ on:
 env:
   SCENARIO: C3-sast-sca
   RESULTS_FILE: analysis/raw/c3_sast_sca_run.csv
-  IMAGE_NAME: tcc-devsecops-api:c3
+  IMAGE_NAME: tcc-devsecops-api:local
   CLUSTER_NAME: tcc-devsecops
   SONAR_PROJECT_SETTINGS: ci/config/sonar-project.properties
   TRIVY_SUMMARY_FILE: analysis/raw/c3_trivy_summary_run.csv
