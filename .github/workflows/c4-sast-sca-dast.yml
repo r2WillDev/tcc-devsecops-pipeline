@@ -218,7 +218,7 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           ./ci/scripts/measure_step.sh "kubernetes_deploy" "$RESULTS_FILE" \
-            bash -c 'kind load docker-image "$IMAGE_NAME" --name "$CLUSTER_NAME" && kubectl apply -f infra/k8s/namespace.yaml && kubectl apply -f infra/k8s/deployment.yaml && kubectl apply -f infra/k8s/service.yaml && kubectl rollout status deployment/tcc-api -n app --timeout=120s'
+            bash -c 'kind load docker-image "$IMAGE_NAME" --name "$CLUSTER_NAME" && kubectl apply -f infra/k8s/namespace.yaml && kubectl apply -f infra/k8s/deployment.yaml && kubectl apply -f infra/k8s/service.yaml && kubectl set image deployment/tcc-api tcc-api="$IMAGE_NAME" -n app && kubectl rollout status deployment/tcc-api -n app --timeout=120s'
 
       - name: Smoke test Kubernetes deployment
         run: |
@@ -235,7 +235,7 @@ jobs:
         run: |
           ./ci/scripts/measure_step.sh "dast_health_check" "$RESULTS_FILE" \
             curl -fsS http://localhost:8000/health
-            
+
       - name: Run OWASP ZAP baseline scan
         run: |
           ./ci/scripts/measure_step.sh "dast_zap_baseline" "$RESULTS_FILE" \
