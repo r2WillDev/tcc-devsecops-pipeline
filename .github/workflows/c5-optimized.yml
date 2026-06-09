@@ -89,6 +89,14 @@ jobs:
           ./ci/scripts/measure_step.sh "docker_build" "$RESULTS_FILE" \
             docker build -t "$IMAGE_NAME" ./app
 
+      - name: Cache Trivy vulnerability database
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/trivy
+          key: ${{ runner.os }}-trivy-${{ env.TRIVY_VERSION }}-${{ hashFiles('ci/config/trivy.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-trivy-${{ env.TRIVY_VERSION }}-
+
       - name: Install Trivy
         run: |
           mkdir -p "$HOME/.local/bin"
@@ -381,6 +389,7 @@ jobs:
             analysis/raw/c5_zap_summary_run.csv
             analysis/reports/trivy/
             analysis/reports/zap/
+
 
 
 
