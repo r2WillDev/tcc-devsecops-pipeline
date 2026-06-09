@@ -30,6 +30,7 @@ env:
   ZAP_SUMMARY_FILE: analysis/raw/c5_zap_summary_run.csv
   ZAP_TARGET_URL: http://host.docker.internal:8000
   RUN_ZAP: ${{ github.event_name == 'workflow_dispatch' && inputs.run_zap || 'true' }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   c5-optimized:
@@ -409,6 +410,7 @@ jobs:
             analysis/raw/c5_zap_summary_run.csv
             analysis/reports/trivy/
             analysis/reports/zap/
+
 
 
 
