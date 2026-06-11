@@ -1,0 +1,13 @@
+scenario,run_id,run_number,commit_sha,step_name,start_timestamp,end_timestamp,duration_seconds,status
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,install_dependencies,2026-06-09T20:01:42Z,2026-06-09T20:01:42Z,0,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,unit_tests,2026-06-09T20:01:42Z,2026-06-09T20:01:43Z,1,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,sonarqube_sast,2026-06-09T20:01:43Z,2026-06-09T20:01:56Z,13,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,docker_build,2026-06-09T20:01:56Z,2026-06-09T20:01:58Z,2,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,sca_fs,2026-06-09T20:02:33Z,2026-06-09T20:02:33Z,0,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,sca_image,2026-06-09T20:02:33Z,2026-06-09T20:02:35Z,2,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,sca_total,2026-06-09T20:02:33Z,2026-06-09T20:02:35Z,2,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,kubernetes_deploy,2026-06-09T20:03:13Z,2026-06-09T20:03:47Z,34,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,kubernetes_smoke_test,2026-06-09T20:03:47Z,2026-06-09T20:03:52Z,5,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,dast_health_check,2026-06-09T20:03:57Z,2026-06-09T20:03:57Z,0,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,dast_zap_baseline,2026-06-09T20:03:57Z,2026-06-09T20:04:34Z,37,success
+C5-optimized,27229813861,2,ce728e75994d8f32aeafaef2d7b70eea8e0b6b4b,workflow_total,2026-06-09T20:01:37Z,2026-06-09T20:04:35Z,178,success
