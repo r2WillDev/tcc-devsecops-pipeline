@@ -1,0 +1,11 @@
+scenario,run_id,run_number,commit_sha,step_name,start_timestamp,end_timestamp,duration_seconds,status
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,install_dependencies,2026-06-04T18:12:43Z,2026-06-04T18:12:44Z,1,success
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,unit_tests,2026-06-04T18:12:44Z,2026-06-04T18:12:45Z,1,success
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,sonarqube_sast,2026-06-04T18:12:45Z,2026-06-04T18:13:11Z,26,success
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,docker_build,2026-06-04T18:13:11Z,2026-06-04T18:13:14Z,3,success
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,sca_fs,2026-06-04T18:13:23Z,2026-06-04T18:13:23Z,0,success
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,sca_image,2026-06-04T18:13:23Z,2026-06-04T18:13:23Z,0,success
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,sca_total,2026-06-04T18:13:23Z,2026-06-04T18:13:24Z,1,success
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,kubernetes_deploy,2026-06-04T18:13:54Z,2026-06-04T18:14:34Z,40,success
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,kubernetes_smoke_test,2026-06-04T18:14:34Z,2026-06-04T18:14:39Z,5,success
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,workflow_total,2026-06-04T18:12:43Z,2026-06-04T18:14:39Z,116,success

@@ -1,0 +1,7 @@
+scenario,run_id,run_number,commit_sha,step_name,start_timestamp,end_timestamp,duration_seconds,status
+C1-baseline,26467314674,3,51e9139b6311cd565bf7a83518f66a2daeffd33e,install_dependencies,2026-05-26T18:55:44Z,2026-05-26T18:55:52Z,8,success
+C1-baseline,26467314674,3,51e9139b6311cd565bf7a83518f66a2daeffd33e,unit_tests,2026-05-26T18:55:52Z,2026-05-26T18:55:54Z,2,success
+C1-baseline,26467314674,3,51e9139b6311cd565bf7a83518f66a2daeffd33e,docker_build,2026-05-26T18:55:54Z,2026-05-26T18:56:07Z,13,success
+C1-baseline,26467314674,3,51e9139b6311cd565bf7a83518f66a2daeffd33e,kubernetes_deploy,2026-05-26T18:56:38Z,2026-05-26T18:57:05Z,27,success
+C1-baseline,26467314674,3,51e9139b6311cd565bf7a83518f66a2daeffd33e,kubernetes_smoke_test,2026-05-26T18:57:06Z,2026-05-26T18:57:11Z,5,success
+C1-baseline,26467314674,3,51e9139b6311cd565bf7a83518f66a2daeffd33e,workflow_total,2026-05-26T18:55:44Z,2026-05-26T18:57:11Z,87,success

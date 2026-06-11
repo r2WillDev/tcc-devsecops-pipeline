@@ -1,0 +1,3 @@
+scenario,run_id,run_number,commit_sha,trivy_target,trivy_scan_type,vuln_low,vuln_medium,vuln_high,vuln_critical,total_vulnerabilities
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,filesystem,fs,0,1,0,0,1
+C3-sast-sca,26970627192,3,514ba44165c97f2eacb9e6d6dc5cadaa5ab007f5,image,image,63,31,8,2,104

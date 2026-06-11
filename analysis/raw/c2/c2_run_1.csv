@@ -1,0 +1,8 @@
+scenario,run_id,run_number,commit_sha,step_name,start_timestamp,end_timestamp,duration_seconds,status
+C2-sast,26903442016,7,877ea348a4cf1acd8ae53a5eaa647b5492ee286d,install_dependencies,2026-06-03T18:02:43Z,2026-06-03T18:02:44Z,1,success
+C2-sast,26903442016,7,877ea348a4cf1acd8ae53a5eaa647b5492ee286d,unit_tests,2026-06-03T18:02:44Z,2026-06-03T18:02:45Z,1,success
+C2-sast,26903442016,7,877ea348a4cf1acd8ae53a5eaa647b5492ee286d,sonarqube_sast,2026-06-03T18:02:45Z,2026-06-03T18:03:01Z,16,success
+C2-sast,26903442016,7,877ea348a4cf1acd8ae53a5eaa647b5492ee286d,docker_build,2026-06-03T18:03:01Z,2026-06-03T18:03:04Z,3,success
+C2-sast,26903442016,7,877ea348a4cf1acd8ae53a5eaa647b5492ee286d,kubernetes_deploy,2026-06-03T18:03:52Z,2026-06-03T18:04:26Z,34,success
+C2-sast,26903442016,7,877ea348a4cf1acd8ae53a5eaa647b5492ee286d,kubernetes_smoke_test,2026-06-03T18:04:26Z,2026-06-03T18:04:31Z,5,success
+C2-sast,26903442016,7,877ea348a4cf1acd8ae53a5eaa647b5492ee286d,workflow_total,2026-06-03T18:02:43Z,2026-06-03T18:04:31Z,108,success
