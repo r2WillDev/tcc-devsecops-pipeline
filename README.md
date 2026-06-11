@@ -137,17 +137,8 @@ O repositório encontra-se na fase inicial de organização. O foco desta etapa 
 - [x] Aplicação base em FastAPI
 - [x] Containerização com Docker
 - [x] Workflows do GitHub Actions
-
-**O que ainda não foi implementado:**
-- [ ] Integração com SonarQube, Trivy e OWASP ZAP
-- [ ] Infraestrutura experimental
-
----
-
-## 🚀 Próximos Passos
-
-- [ ] Implementar progressivamente os cenários C2, C3 e C4
-- [ ] Implementar e avaliar o cenário C5 com as otimizações
+- [X] Integração com SonarQube, Trivy e OWASP ZAP
+- [X] Infraestrutura experimental
 
 ---
 
