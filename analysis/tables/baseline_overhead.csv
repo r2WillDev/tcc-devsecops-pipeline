@@ -1,0 +1,6 @@
+scenario_order,scenario_key,scenario_label,mean_seconds,absolute_overhead_vs_c1_seconds,percentage_overhead_vs_c1
+1,c1,C1 - Baseline,87.0,0.0,0.0
+2,c2,C2 - SAST,90.4,3.4,3.91
+3,c3,C3 - SAST + SCA,126.2,39.2,45.06
+4,c4,C4 - SAST + SCA + DAST,236.6,149.6,171.95
+5,c5,C5 - Optimized,191.8,104.8,120.46

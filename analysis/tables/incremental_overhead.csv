@@ -1,0 +1,5 @@
+comparison,interpretation,reference_mean_seconds,target_mean_seconds,absolute_overhead_seconds,percentage_overhead
+C2 - C1,Impacto do SAST,87.0,90.4,3.4,3.91
+C3 - C2,Impacto do SCA,90.4,126.2,35.8,39.6
+C4 - C3,Impacto do DAST,126.2,236.6,110.4,87.48
+C5 - C4,Impacto das otimizações,236.6,191.8,-44.8,-18.93

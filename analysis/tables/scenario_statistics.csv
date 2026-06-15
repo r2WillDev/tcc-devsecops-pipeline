@@ -1,0 +1,6 @@
+scenario_order,scenario_key,scenario_label,executions,mean_seconds,median_seconds,min_seconds,max_seconds,std_seconds
+1,c1,C1 - Baseline,5,87.0,87.0,80,93,5.61
+2,c2,C2 - SAST,5,90.4,88.0,79,108,10.69
+3,c3,C3 - SAST + SCA,5,126.2,127.0,107,149,16.02
+4,c4,C4 - SAST + SCA + DAST,5,236.6,207.0,197,309,49.67
+5,c5,C5 - Optimized,5,191.8,180.0,172,240,27.63
