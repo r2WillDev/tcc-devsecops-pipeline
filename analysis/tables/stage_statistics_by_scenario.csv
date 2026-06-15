@@ -1,0 +1,43 @@
+scenario_order,scenario_label,step_name,executions,mean_seconds,median_seconds,min_seconds,max_seconds,std_seconds
+1,C1 - Baseline,kubernetes_deploy,5,27.8,28.0,27,29,0.84
+1,C1 - Baseline,docker_build,5,14.4,13.0,12,17,2.41
+1,C1 - Baseline,install_dependencies,5,8.2,8.0,7,9,0.84
+1,C1 - Baseline,kubernetes_smoke_test,5,5.0,5.0,5,5,0.0
+1,C1 - Baseline,unit_tests,5,1.6,2.0,1,2,0.55
+2,C2 - SAST,kubernetes_deploy,5,33.4,34.0,28,37,3.29
+2,C2 - SAST,sonarqube_sast,5,12.4,12.0,10,16,2.61
+2,C2 - SAST,kubernetes_smoke_test,5,5.0,5.0,5,5,0.0
+2,C2 - SAST,docker_build,5,2.2,2.0,2,3,0.45
+2,C2 - SAST,unit_tests,5,1.0,1.0,1,1,0.0
+2,C2 - SAST,install_dependencies,5,0.8,1.0,0,1,0.45
+3,C3 - SAST + SCA,kubernetes_deploy,5,39.0,40.0,29,46,6.52
+3,C3 - SAST + SCA,sonarqube_sast,5,20.4,16.0,13,33,8.73
+3,C3 - SAST + SCA,kubernetes_smoke_test,5,5.0,5.0,5,5,0.0
+3,C3 - SAST + SCA,docker_build,5,3.4,3.0,2,6,1.52
+3,C3 - SAST + SCA,unit_tests,5,1.8,2.0,1,3,0.84
+3,C3 - SAST + SCA,install_dependencies,5,0.6,1.0,0,1,0.55
+3,C3 - SAST + SCA,sca_total,5,0.6,1.0,0,1,0.55
+3,C3 - SAST + SCA,sca_image,5,0.4,0.0,0,1,0.55
+3,C3 - SAST + SCA,sca_fs,5,0.0,0.0,0,0,0.0
+4,C4 - SAST + SCA + DAST,dast_zap_baseline,5,90.0,64.0,53,197,60.23
+4,C4 - SAST + SCA + DAST,kubernetes_deploy,5,48.4,43.0,33,75,16.06
+4,C4 - SAST + SCA + DAST,sonarqube_sast,5,24.8,31.0,13,34,9.96
+4,C4 - SAST + SCA + DAST,kubernetes_smoke_test,5,5.2,5.0,5,6,0.45
+4,C4 - SAST + SCA + DAST,docker_build,5,4.4,4.0,3,6,1.14
+4,C4 - SAST + SCA + DAST,install_dependencies,5,1.2,1.0,1,2,0.45
+4,C4 - SAST + SCA + DAST,unit_tests,5,1.2,1.0,1,2,0.45
+4,C4 - SAST + SCA + DAST,sca_total,5,0.8,1.0,0,1,0.45
+4,C4 - SAST + SCA + DAST,sca_fs,5,0.2,0.0,0,1,0.45
+4,C4 - SAST + SCA + DAST,sca_image,5,0.2,0.0,0,1,0.45
+4,C4 - SAST + SCA + DAST,dast_health_check,5,0.0,0.0,0,0,0.0
+5,C5 - Optimized,dast_zap_baseline,5,48.0,44.0,36,79,17.73
+5,C5 - Optimized,kubernetes_deploy,5,35.4,37.0,29,39,4.04
+5,C5 - Optimized,sonarqube_sast,5,15.8,16.0,12,20,3.35
+5,C5 - Optimized,kubernetes_smoke_test,5,5.2,5.0,5,6,0.45
+5,C5 - Optimized,docker_build,5,2.6,2.0,2,5,1.34
+5,C5 - Optimized,sca_total,5,1.8,2.0,1,3,0.84
+5,C5 - Optimized,sca_image,5,1.6,2.0,0,3,1.14
+5,C5 - Optimized,unit_tests,5,1.4,1.0,1,2,0.55
+5,C5 - Optimized,install_dependencies,5,0.4,0.0,0,1,0.55
+5,C5 - Optimized,sca_fs,5,0.2,0.0,0,1,0.45
+5,C5 - Optimized,dast_health_check,5,0.0,0.0,0,0,0.0
